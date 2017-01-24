@@ -12,11 +12,12 @@ Contributors / Licensing
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 
+All additional code from stackoverflow are licensed under CC-BY-SA 3.0
+
 server.py contains contributions from:
 
 * Abram Hindle
 * Eddie Antonio Santos
-* Joshua Charles Campbell
 * Sam Bao
 
 But the server.py example is derived from the python documentation
