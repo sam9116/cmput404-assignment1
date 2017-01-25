@@ -93,7 +93,11 @@ class MyWebServer(SocketServer.BaseRequestHandler):
         print ("Got a request of: %s\n" % self.data)
         listofdata = self.data.split()
         
-        path = os.path.dirname(__file__)+"/www"+listofdata[1]
+	#os.path.dirname(__file__) failed to return proper path, therefore my sever couldn't find the file it is being requested
+        #path = os.path.dirname(__file__)+"/www"+listofdata[1]
+	#written by Sven Marnach(http://stackoverflow.com/users/279627/sven-marnach)
+	#o http://stackoverflow.com/questions/7783308/os-path-dirname-file-returns-empty
+	path = os.path.dirname(os.path.abspath(__file__))+"/www"+listofdata[1]
         #print (path)
 
         self.request.sendall("HTTP/1.1 ")
@@ -120,12 +124,13 @@ class MyWebServer(SocketServer.BaseRequestHandler):
                 else:
                     st = st+"/index.html"
             try:
-                path = os.path.dirname(__file__)+st
+		
+                path = os.path.dirname(os.path.abspath(__file__))+st
                 f = open(path,"r")
-                print("the whole thing: "+st)
-                print("file name: "+listofdata[1])
-                print(mimetypes.guess_type(st,False)[0])
-                print("\n\n\n")
+                #print("the whole thing: "+st)
+                #print("file name: "+listofdata[1])
+                #print(mimetypes.guess_type(st,False)[0])
+                #print("\n\n\n")
                 self.request.sendall("Content-Type: "+ mimetypes.guess_type(st,False)[0]+";")
 
                 
@@ -141,7 +146,7 @@ class MyWebServer(SocketServer.BaseRequestHandler):
                 #on http://stackoverflow.com/questions/27206838/how-to-finish-a-socket-file-transfer-in-python
                 read = f.read(1024)
                 while len(read) > 0:
-                    print("sending: "+read)
+                    #print("sending: "+read)
                     self.request.sendall(read)
                     read = f.read(1024)          
                 f.close()
